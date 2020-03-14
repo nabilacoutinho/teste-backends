@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.InvalidEventException;
-import proposal.Event;
-import proposal.Proposal;
+import model.Event;
+import model.Proposal;
 
 public class EventsProcessor {
 

@@ -1,4 +1,4 @@
-package test.proposal;
+package test.model;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -7,10 +7,10 @@ import java.util.Calendar;
 import org.junit.jupiter.api.Test;
 
 import exceptions.InvalidEventException;
-import proposal.Event;
-import proposal.EventActionEnum;
-import proposal.EventSchemaEnum;
-import proposal.Proposal;
+import model.Event;
+import model.EventActionEnum;
+import model.EventSchemaEnum;
+import model.Proposal;
 
 public class EventTest {
 	

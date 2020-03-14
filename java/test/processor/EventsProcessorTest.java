@@ -13,10 +13,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import exceptions.InvalidEventException;
+import model.EventActionEnum;
+import model.EventSchemaEnum;
+import model.Proposal;
 import processor.EventsProcessor;
-import proposal.EventActionEnum;
-import proposal.EventSchemaEnum;
-import proposal.Proposal;
 
 public class EventsProcessorTest {
 

@@ -1,4 +1,4 @@
-package proposal;
+package model;
 
 public enum EventSchemaEnum {
 	PROPOSAL("proposal"),

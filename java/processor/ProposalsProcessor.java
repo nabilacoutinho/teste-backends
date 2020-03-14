@@ -1,7 +1,7 @@
 package processor;
 
 import exceptions.InvalidEventException;
-import proposal.Proposal;
+import model.Proposal;
 
 public class ProposalsProcessor {
 
