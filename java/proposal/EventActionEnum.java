@@ -1,9 +1,11 @@
 package proposal;
 
 public enum EventActionEnum {
-	CREATE("create"),
-	UPDATE("update"),
-	DELETE("delete");
+	CREATED("created"),
+	ADDED("added"),
+	UPDATED("updated"),
+	DELETED("deleted"),
+	REMOVED("removed");
 
 	private String code;
 	
