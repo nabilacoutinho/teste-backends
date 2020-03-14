@@ -21,14 +21,7 @@ public class EventsProcessor {
 		validateEventWasNotDuplicated(event);
 		validateEventWasNotProcessed(event);
 		
-		switch (event.getSchema()) {
-		case PROPOSAL:
-			processProposal(inputData, event);
-			break;
-
-		default:
-			break;
-		}
+		process(inputData, event);
 		
 		addHistoric(event);
 	}
@@ -104,15 +97,27 @@ public class EventsProcessor {
 			}
 		}
 	}
-	
-	private static void processProposal(String[] inputData, Event event)
-			throws InvalidEventException {
+
+	private static void process(String[] inputData, Event event) throws InvalidEventException {
+		switch (event.getSchema()) {
+		case PROPOSAL:
+			processProposal(inputData, event);
+			break;
+			
+		case WARRANTY:
+			processWarranty(inputData, event);
+			break;
+
+		default:
+			throw new InvalidEventException("Event Schema not available");
+		}
+	}
+
+	private static void processProposal(String[] inputData, Event event) throws InvalidEventException {
 		switch (event.getAction()) {
 		case CREATED:
-			ProposalsProcessor.createProposal(event.getProposal(), inputData);
-			break;
 		case UPDATED:
-			ProposalsProcessor.updateProposal(event.getProposal(), inputData);
+			ProposalsProcessor.processProposal(event.getProposal(), inputData);
 			break;
 		case DELETED:
 			if (inputData.length != 5) {
@@ -120,6 +125,21 @@ public class EventsProcessor {
 			}
 			
 			proposals.remove(event.getProposal());
+			break;
+			
+		default:
+			throw new InvalidEventException("Event Action not available");
+		}
+	}
+
+	private static void processWarranty(String[] inputData, Event event) throws InvalidEventException {
+		switch (event.getAction()) {
+		case ADDED:
+		case UPDATED:
+			WarrantyProcessor.processWarranty(event.getProposal(), inputData);
+			break;
+		case REMOVED:
+			WarrantyProcessor.removeWarranty(event.getProposal(), inputData);
 			break;
 			
 		default:

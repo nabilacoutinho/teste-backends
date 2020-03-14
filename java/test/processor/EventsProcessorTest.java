@@ -136,6 +136,8 @@ public class EventsProcessorTest {
 		assertEquals(0, EventsProcessor.getProposals().size());
 	}
 	
+	// TODO: add tests for others events schemas
+	
 	private String getProposalCreatedInput(double loanValue, int installments) {
 		String id = PROPOSAL_CREATED_EVENT_ID;
 		String schemaCode = EventSchemaEnum.PROPOSAL.getCode();

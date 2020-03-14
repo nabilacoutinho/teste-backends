@@ -18,6 +18,10 @@ public enum EventActionEnum {
 	}
 	
 	public static EventActionEnum getByCode(String code) {
+		if (code.isBlank()) {
+			return null;
+		}
+		
 		for (EventActionEnum action : EventActionEnum.values()) {
 			if (action.code.equals(code)) {
 				return action;

@@ -5,15 +5,7 @@ import model.Proposal;
 
 public class ProposalsProcessor {
 
-	public static Proposal createProposal(Proposal proposal, String[] inputData) throws InvalidEventException {
-		validateRequiredFields(inputData);
-
-		loadProposalValues(proposal, inputData);
-		
-		return proposal;
-	}
-
-	public static Proposal updateProposal(Proposal proposal, String[] inputData) throws InvalidEventException {
+	public static Proposal processProposal(Proposal proposal, String[] inputData) throws InvalidEventException {
 		validateRequiredFields(inputData);
 
 		loadProposalValues(proposal, inputData);
@@ -23,7 +15,7 @@ public class ProposalsProcessor {
 	
 	private static void validateRequiredFields(String[] inputData) throws InvalidEventException {
 		if (inputData == null || inputData.length != 7) {
-			throw new InvalidEventException("Proposal event are bad formatted");
+			throw new InvalidEventException("Proposal event is bad formatted");
 		}
 	}
 

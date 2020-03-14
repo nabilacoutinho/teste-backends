@@ -16,6 +16,10 @@ public enum EventSchemaEnum {
 	}
 	
 	public static EventSchemaEnum getByCode(String code) {
+		if (code.isBlank()) {
+			return null;
+		}
+		
 		for (EventSchemaEnum schema : EventSchemaEnum.values()) {
 			if (schema.code.equals(code)) {
 				return schema;
