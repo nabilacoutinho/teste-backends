@@ -21,21 +21,22 @@ public class EventsProcessor {
 		validateEventWasNotDuplicated(event);
 		validateEventWasNotProcessed(event);
 		
-		addHistoric(event);
-	}
+		switch (event.getSchema()) {
+		case PROPOSAL:
+			processProposal(inputData, event);
+			break;
 
-	private static void addHistoric(Event event) {
-		if (oldEvents == null) {
-			oldEvents = new ArrayList<Event>();
+		default:
+			break;
 		}
 		
-		oldEvents.add(event);
+		addHistoric(event);
 	}
 
 	private static String[] getInputData(String input) throws InvalidEventException {
 		String[] inputData = input.split(",");
 		
-		if (inputData.length < 5) {
+		if (inputData == null || inputData.length < 5) {
 			throw new InvalidEventException();
 		}
 		
@@ -49,8 +50,7 @@ public class EventsProcessor {
 		event.setSchema(inputData[1]);
 		event.setAction(inputData[2]);
 		event.setTime(Long.valueOf(inputData[3]));
-
-		loadProposalFromInputData(inputData);
+		event.setProposal(loadProposalFromInputData(inputData));
 		
 		return event;
 	}
@@ -104,5 +104,39 @@ public class EventsProcessor {
 			}
 		}
 	}
+	
+	private static void processProposal(String[] inputData, Event event)
+			throws InvalidEventException {
+		switch (event.getAction()) {
+		case CREATED:
+			ProposalsProcessor.createProposal(event.getProposal(), inputData);
+			break;
+		case UPDATED:
+			ProposalsProcessor.updateProposal(event.getProposal(), inputData);
+			break;
+		case DELETED:
+			if (inputData.length != 5) {
+				throw new InvalidEventException("Proposal event are bad formatted");
+			}
+			
+			proposals.remove(event.getProposal());
+			break;
+			
+		default:
+			throw new InvalidEventException("Event Action not available");
+		}
+	}
+	
+	private static void addHistoric(Event event) {
+		if (oldEvents == null) {
+			oldEvents = new ArrayList<Event>();
+		}
+		
+		oldEvents.add(event);
+	}
 
+	public static List<Proposal> getProposals() {
+		return proposals;
+	}
+	
 }
