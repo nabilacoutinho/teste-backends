@@ -9,7 +9,13 @@ public class Proposal {
 	private double loanValue;
 	private int monthlyInstallmentsQty;
 	private List<Warranty> warranties;
+	private List<Proponent> proponents;
 
+	public Proposal() {
+		this.warranties = new ArrayList<Warranty>();
+		this.proponents = new ArrayList<Proponent>();
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -39,10 +45,6 @@ public class Proposal {
 	}
 
 	public void addWarranty(Warranty warranty) {
-		if (this.warranties == null) {
-			warranties = new ArrayList<Warranty>();
-		}
-		
 		int warrantyIndex = this.warranties.lastIndexOf(warranty);
 		if (warrantyIndex > -1) {
 			this.warranties.add(warrantyIndex, warranty);
@@ -52,12 +54,26 @@ public class Proposal {
 		this.warranties.add(warranty);
 	}
 
-	public void removeWarranty(Warranty warranty) {
-		if (this.warranties == null) {
+	public void removeWarranty(Warranty warranty) {		
+		this.warranties.remove(warranty);
+	}
+
+	public List<Proponent> getProponents() {
+		return proponents;
+	}
+
+	public void addProponent(Proponent proponent) {
+		int proponentIndex = this.proponents.lastIndexOf(proponent);
+		if (proponentIndex > -1) {
+			this.proponents.add(proponentIndex, proponent);
 			return;
 		}
 		
-		this.warranties.remove(warranty);
+		this.proponents.add(proponent);
+	}
+
+	public void removeProponent(Proponent proponent) {
+		this.proponents.remove(proponent);
 	}
 	
 }

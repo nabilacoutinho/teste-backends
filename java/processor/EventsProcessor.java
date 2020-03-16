@@ -103,9 +103,13 @@ public class EventsProcessor {
 		case PROPOSAL:
 			processProposal(inputData, event);
 			break;
-			
+
 		case WARRANTY:
 			processWarranty(inputData, event);
+			break;
+
+		case PROPONENT:
+			processProponent(inputData, event);
 			break;
 
 		default:
@@ -140,6 +144,21 @@ public class EventsProcessor {
 			break;
 		case REMOVED:
 			WarrantyProcessor.removeWarranty(event.getProposal(), inputData);
+			break;
+			
+		default:
+			throw new InvalidEventException("Event Action not available");
+		}
+	}
+
+	private static void processProponent(String[] inputData, Event event) throws InvalidEventException {
+		switch (event.getAction()) {
+		case ADDED:
+		case UPDATED:
+			ProponentProcessor.processProponent(event.getProposal(), inputData);
+			break;
+		case REMOVED:
+			ProponentProcessor.removeProponent(event.getProposal(), inputData);
 			break;
 			
 		default:

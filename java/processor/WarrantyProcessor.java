@@ -62,10 +62,12 @@ public class WarrantyProcessor {
 	private static Warranty getWarranty(Proposal proposal, String warrantyId) {
 		for (Warranty warranty : proposal.getWarranties()) {
 			if (warrantyId.equals(warranty.getId())) {
-				
+				return warranty;
 			}
 		}
+		
 		Warranty warranty = new Warranty();
+		warranty.setId(warrantyId);
 		
 		return warranty;
 	}

@@ -3,7 +3,7 @@ package model;
 public enum EventSchemaEnum {
 	PROPOSAL("proposal"),
 	WARRANTY("warranty"),
-	PROPOSENT("proposent");
+	PROPONENT("proponent");
 
 	private String code;
 	
