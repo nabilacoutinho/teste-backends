@@ -1,5 +1,6 @@
 package processor;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class EventsProcessor {
 	private static List<Proposal> proposals;
 	private static List<Event> oldEvents;
 	
-	public static void processEvent(String input) throws InvalidEventException {
+	public static void processEvent(String input) throws InvalidEventException, ParseException {
 		String[] inputData = getInputData(input);
 		
 		Event event = loadEventFromInputData(inputData);
@@ -36,13 +37,13 @@ public class EventsProcessor {
 		return inputData;
 	}
 
-	private static Event loadEventFromInputData(String[] inputData) {
+	private static Event loadEventFromInputData(String[] inputData) throws ParseException {
 		Event event = new Event();
 		
 		event.setId(inputData[0]);
 		event.setSchema(inputData[1]);
 		event.setAction(inputData[2]);
-		event.setTime(Long.valueOf(inputData[3]));
+		event.setTime(inputData[3]);
 		event.setProposal(loadProposalFromInputData(inputData));
 		
 		return event;

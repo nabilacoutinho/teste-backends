@@ -26,7 +26,7 @@ public class Solution {
 				EventsProcessor.processEvent(message);
 			} catch (Exception e) {
 				// TODO: log exception message
-//				System.err.println(e.getMessage());
+				System.err.println(e.getMessage());
 			}
 		}
 		
@@ -38,6 +38,7 @@ public class Solution {
 			}
 		}
 		
+		System.out.println(String.join(",", validProposals));
 
 		return String.join(",", validProposals);
 	}

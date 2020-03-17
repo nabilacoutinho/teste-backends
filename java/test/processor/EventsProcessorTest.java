@@ -3,6 +3,7 @@ package test.processor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Stream;
@@ -62,7 +63,7 @@ public class EventsProcessorTest {
 	}
 	
 	@Test
-	public void testProcessEvent_WhenDuplicatedInput_ThenFails() throws InvalidEventException {
+	public void testProcessEvent_WhenDuplicatedInput_ThenFails() throws InvalidEventException, ParseException {
 		String input = getProposalDeletedInput();
 		
 		EventsProcessor.processEvent(input);
@@ -73,7 +74,7 @@ public class EventsProcessorTest {
 	}
 
 	@Test
-	public void testProcessEvent_WhenDelayedInput_ThenFails() throws InvalidEventException {
+	public void testProcessEvent_WhenDelayedInput_ThenFails() throws InvalidEventException, ParseException {
 		String input = getProposalDeletedInput();
 		String delayedInput = getProposalDeletedDelayedInput();
 		
@@ -100,7 +101,7 @@ public class EventsProcessorTest {
 	}
 
 	@Test
-	public void testProcessEvent_WhenProposalCreatedEvent_ThenAddProposal() throws InvalidEventException {
+	public void testProcessEvent_WhenProposalCreatedEvent_ThenAddProposal() throws InvalidEventException, ParseException {
 		double loanValue = 150000;
 		int installments = 24;
 		
@@ -112,7 +113,7 @@ public class EventsProcessorTest {
 	}
 
 	@Test
-	public void testProcessEvent_WhenProposalUpdatedEvent_ThenUpdateProposal() throws InvalidEventException {
+	public void testProcessEvent_WhenProposalUpdatedEvent_ThenUpdateProposal() throws InvalidEventException, ParseException {
 		double loanValue = 150000;
 		int installments = 24;
 		
@@ -126,7 +127,7 @@ public class EventsProcessorTest {
 	}
 
 	@Test
-	public void testProcessEvent_WhenProposalDeletedEvent_ThenDeleteProposal() throws InvalidEventException {
+	public void testProcessEvent_WhenProposalDeletedEvent_ThenDeleteProposal() throws InvalidEventException, ParseException {
 		String createdInput = getProposalCreatedInput(0.0, 1);
 		String deletedInput = getProposalDeletedInput();
 		
@@ -175,7 +176,7 @@ public class EventsProcessorTest {
 
 		Calendar yesterday = Calendar.getInstance();
 		yesterday.add(Calendar.DAY_OF_MONTH, -1);
-		Long timestamp = yesterday.getTimeInMillis();
+		String timestamp = yesterday.getTime().toString();
 		String proposalId = PROPOSAL_ID;
 
 		return id + "," + schemaCode +  "," + actionCode + "," + timestamp + "," + proposalId;

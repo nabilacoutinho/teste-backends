@@ -1,5 +1,7 @@
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import exceptions.InvalidEventException;
@@ -67,8 +69,8 @@ public class Event {
 		this.time = time;
 	}
 	
-	public void setTime(Long timestamp) {
-		Date time = new Date(timestamp);
+	public void setTime(String timestamp) throws ParseException {
+		Date time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(timestamp);
 
 		this.setTime(time);
 	}
