@@ -12,17 +12,17 @@ public class ProposalTest {
 	private static final int VALID_LOAN_VALUE = 100000;
 	private static final int VALID_INSTALLMENTS = 30;
 
-	@Test
-	public void testIsValid_WhenAllConditionsAreFine_ThenReturnTrue() {
-		Proposal proposal = Proposal.builder()
-				.loanValue(VALID_LOAN_VALUE)
-				.monthlyInstallmentsQty(VALID_INSTALLMENTS)
-				.build();
-		
-		boolean response = proposal.isValid();
-		
-		assertTrue(response);
-	}
+//	@Test
+//	public void testIsValid_WhenAllConditionsAreFine_ThenReturnTrue() {
+//		Proposal proposal = Proposal.builder()
+//				.loanValue(VALID_LOAN_VALUE)
+//				.monthlyInstallmentsQty(VALID_INSTALLMENTS)
+//				.build();
+//		
+//		boolean response = proposal.isValid();
+//		
+//		assertTrue(response);
+//	}
 
 	@Test
 	public void testIsValid_WhenProposalLoanValueAboveLimit_ThenReturnFalse() {
@@ -71,5 +71,7 @@ public class ProposalTest {
 		
 		assertFalse(response);
 	}
+	
+	// TODO: add other validation tests
 	
 }

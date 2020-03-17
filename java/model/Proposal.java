@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Proposal {
 
@@ -22,7 +23,7 @@ public class Proposal {
 	}
 	
 	public boolean isValid() {
-		return isValidLoanValue() && isValidInstallmentsQty();
+		return isValidLoanValue() && isValidInstallmentsQty() && isValidProponents();
 	}
 
 	private boolean isValidLoanValue() {
@@ -31,6 +32,42 @@ public class Proposal {
 	
 	private boolean isValidInstallmentsQty() {
 		return this.monthlyInstallmentsQty >= INSTALLMENTS_MIN_LIMIT && this.monthlyInstallmentsQty <= INSTALLMENTS_MAX_LIMIT;
+	}
+	
+	private boolean isValidProponents() {
+		if (this.proponents.size() < 2) {
+			return false;
+		}
+
+		List<Proponent> mainProponents = this.proponents.stream().filter(p -> p.isMain()).collect(Collectors.toList());
+		if (mainProponents.size() != 1) {
+			return false;
+		}
+
+		if (this.proponents.stream().anyMatch(p -> p.getAge() < 18)) {
+			return false;
+		}
+		
+		Proponent mainProponent = mainProponents.get(0);		
+		double minMonthyIncome = getMinMonthlyIncome(mainProponent);
+		
+		if (mainProponent.getMonthlyIncome() < minMonthyIncome) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	private double getMinMonthlyIncome(Proponent mainProponent) {
+		double installmentValue = this.loanValue / this.monthlyInstallmentsQty;
+
+		if (mainProponent.getAge() <= 24) {
+			return installmentValue * 4;
+		} else if (mainProponent.getAge() <= 50) {
+			return installmentValue * 3;
+		} else {
+			return installmentValue * 2;
+		}
 	}
 	
 	public String getId() {
