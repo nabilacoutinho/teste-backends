@@ -23,7 +23,7 @@ public class Proposal {
 	}
 	
 	public boolean isValid() {
-		return isValidLoanValue() && isValidInstallmentsQty() && isValidProponents();
+		return isValidLoanValue() && isValidInstallmentsQty() && isValidProponents() && isValidWarranties();
 	}
 
 	private boolean isValidLoanValue() {
@@ -32,6 +32,19 @@ public class Proposal {
 	
 	private boolean isValidInstallmentsQty() {
 		return this.monthlyInstallmentsQty >= INSTALLMENTS_MIN_LIMIT && this.monthlyInstallmentsQty <= INSTALLMENTS_MAX_LIMIT;
+	}
+	
+	private boolean isValidWarranties() {
+		if (this.warranties.size() < 1) {
+			return false;
+		}
+		
+		double warrantiesTotal = 0;
+		for (Warranty warranty : warranties) {
+			warrantiesTotal += warranty.getValue();
+		}
+		
+		return warrantiesTotal >= (this.loanValue * 2);
 	}
 	
 	private boolean isValidProponents() {
