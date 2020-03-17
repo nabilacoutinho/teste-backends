@@ -51,6 +51,10 @@ public class EventsProcessor {
 	private static Proposal loadProposalFromInputData(String[] inputData) {
 		String proposalId = inputData[4];
 		
+		if (proposals == null) {
+			proposals = new ArrayList<Proposal>();
+		}
+		
 		for (Proposal proposal : proposals) {
 			if (proposalId.equals(proposal.getId())) {
 				return proposal;
@@ -175,6 +179,10 @@ public class EventsProcessor {
 	}
 
 	public static List<Proposal> getProposals() {
+		if (proposals == null) {
+			proposals = new ArrayList<Proposal>();
+		}
+		
 		return proposals;
 	}
 	
