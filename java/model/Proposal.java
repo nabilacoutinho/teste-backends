@@ -38,9 +38,13 @@ public class Proposal {
 		if (this.warranties.size() < 1) {
 			return false;
 		}
-		
+
 		double warrantiesTotal = 0;
 		for (Warranty warranty : warranties) {
+			if (!warranty.getProvince().isAllowed()) {
+				return false;
+			}
+			
 			warrantiesTotal += warranty.getValue();
 		}
 		
@@ -64,11 +68,7 @@ public class Proposal {
 		Proponent mainProponent = mainProponents.get(0);		
 		double minMonthyIncome = getMinMonthlyIncome(mainProponent);
 		
-		if (mainProponent.getMonthlyIncome() < minMonthyIncome) {
-			return false;
-		}
-		
-		return true;
+		return mainProponent.getMonthlyIncome() >= minMonthyIncome;
 	}
 
 	private double getMinMonthlyIncome(Proponent mainProponent) {

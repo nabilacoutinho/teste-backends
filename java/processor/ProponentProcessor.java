@@ -6,6 +6,8 @@ import model.Proponent;
 
 public class ProponentProcessor {
 	
+	private static final String TRUE_VALUE = "true";
+
 	public static Proposal processProponent(Proposal proposal, String[] inputData) throws InvalidEventException {
 		validateInputDataIsComplete(inputData);
 		
@@ -34,7 +36,7 @@ public class ProponentProcessor {
 		proponent.setName(inputData[6]);
 		proponent.setAge(Integer.valueOf(inputData[7]));
 		proponent.setMonthlyIncome(Double.valueOf(inputData[8]));
-		proponent.setMain(inputData[9] == "true");
+		proponent.setMain(TRUE_VALUE.equals(inputData[9]));
 		
 		proposal.addProponent(proponent);
 		

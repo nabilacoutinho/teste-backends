@@ -34,10 +34,6 @@ public class WarrantyProcessor {
 		warranty.setValue(Double.valueOf(inputData[6]));
 		warranty.setProvince(inputData[7]);
 		
-		if (!warranty.getProvince().isAllowed()) {
-			throw new InvalidEventException("Warranty Province not allowed");
-		}
-		
 		proposal.addWarranty(warranty);
 		
 		return proposal;

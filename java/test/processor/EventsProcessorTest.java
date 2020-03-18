@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,13 +26,20 @@ public class EventsProcessorTest {
 	private static final String PROPOSAL_ID = "abc123";
 	private static final String PROPOSAL_CREATED_EVENT_ID = "345cde";
 	private static final String PROPOSAL_UPDATED_EVENT_ID = "456def";
-
+	
+	private EventsProcessor processor;
+	
+	@BeforeEach
+	public void init() {
+		processor = new EventsProcessor();
+	}
+	
 	@Test
 	public void testProcessEvent_WhenEmptyInput_ThenFails() {
 		String input = "";
 		
 		assertThrows(InvalidEventException.class, () -> {			
-			EventsProcessor.processEvent(input);
+			processor.processEvent(input);
 		});
 	}
 
@@ -41,7 +49,7 @@ public class EventsProcessorTest {
 		String input = id + "," + schemaCode +  "," + actionCode + "," + timestamp + "," + proposalId;
 		
 		assertThrows(InvalidEventException.class, () -> {			
-			EventsProcessor.processEvent(input);
+			processor.processEvent(input);
 		});
 	}
 	
@@ -66,10 +74,10 @@ public class EventsProcessorTest {
 	public void testProcessEvent_WhenDuplicatedInput_ThenFails() throws InvalidEventException, ParseException {
 		String input = getProposalDeletedInput();
 		
-		EventsProcessor.processEvent(input);
+		processor.processEvent(input);
 		
 		assertThrows(InvalidEventException.class, () -> {			
-			EventsProcessor.processEvent(input);
+			processor.processEvent(input);
 		});
 	}
 
@@ -78,10 +86,10 @@ public class EventsProcessorTest {
 		String input = getProposalDeletedInput();
 		String delayedInput = getProposalDeletedDelayedInput();
 		
-		EventsProcessor.processEvent(input);
+		processor.processEvent(input);
 		
 		assertThrows(InvalidEventException.class, () -> {			
-			EventsProcessor.processEvent(delayedInput);
+			processor.processEvent(delayedInput);
 		});
 	}
 	
@@ -96,7 +104,7 @@ public class EventsProcessorTest {
 		String input = id + "," + schemaCode +  "," + actionCode + "," + timestamp + "," + proposalId;
 		
 		assertThrows(InvalidEventException.class, () -> {			
-			EventsProcessor.processEvent(input);
+			processor.processEvent(input);
 		});
 	}
 
@@ -107,9 +115,9 @@ public class EventsProcessorTest {
 		
 		String createdInput = getProposalCreatedInput(loanValue, installments);
 		
-		EventsProcessor.processEvent(createdInput);
+		processor.processEvent(createdInput);
 		
-		assertProposal(loanValue, installments);
+		assertProposal(loanValue, installments, processor);
 	}
 
 	@Test
@@ -120,10 +128,10 @@ public class EventsProcessorTest {
 		String createdInput = getProposalCreatedInput(0.0, 1);
 		String updatedInput = getProposalUpdatedInput(loanValue, installments);
 		
-		EventsProcessor.processEvent(createdInput);
-		EventsProcessor.processEvent(updatedInput);
+		processor.processEvent(createdInput);
+		processor.processEvent(updatedInput);
 		
-		assertProposal(loanValue, installments);
+		assertProposal(loanValue, installments, processor);
 	}
 
 	@Test
@@ -131,10 +139,10 @@ public class EventsProcessorTest {
 		String createdInput = getProposalCreatedInput(0.0, 1);
 		String deletedInput = getProposalDeletedInput();
 		
-		EventsProcessor.processEvent(createdInput);
-		EventsProcessor.processEvent(deletedInput);
+		processor.processEvent(createdInput);
+		processor.processEvent(deletedInput);
 		
-		assertEquals(0, EventsProcessor.getProposals().size());
+		assertEquals(0, processor.getProposals().size());
 	}
 	
 	// TODO: add tests for others events schemas
@@ -182,8 +190,8 @@ public class EventsProcessorTest {
 		return id + "," + schemaCode +  "," + actionCode + "," + timestamp + "," + proposalId;
 	}
 
-	private static void assertProposal(double loanValue, int installments) {
-		List<Proposal> processedProposals = EventsProcessor.getProposals();
+	private static void assertProposal(double loanValue, int installments, EventsProcessor processor) {
+		List<Proposal> processedProposals = processor.getProposals();
 		assertEquals(1, processedProposals.size());
 		
 		Proposal proposal = processedProposals.get(0);

@@ -10,10 +10,15 @@ import model.Proposal;
 
 public class EventsProcessor {
 
-	private static List<Proposal> proposals;
-	private static List<Event> oldEvents;
+	private List<Proposal> proposals;
+	private List<Event> oldEvents;
 	
-	public static void processEvent(String input) throws InvalidEventException, ParseException {
+	public EventsProcessor() {
+		this.proposals = new ArrayList<Proposal>();
+		this.oldEvents = new ArrayList<Event>();
+	}
+	
+	public void processEvent(String input) throws InvalidEventException, ParseException {
 		String[] inputData = getInputData(input);
 		
 		Event event = loadEventFromInputData(inputData);
@@ -27,7 +32,7 @@ public class EventsProcessor {
 		addHistoric(event);
 	}
 
-	private static String[] getInputData(String input) throws InvalidEventException {
+	private String[] getInputData(String input) throws InvalidEventException {
 		String[] inputData = input.split(",");
 		
 		if (inputData == null || inputData.length < 5) {
@@ -37,7 +42,7 @@ public class EventsProcessor {
 		return inputData;
 	}
 
-	private static Event loadEventFromInputData(String[] inputData) throws ParseException {
+	private Event loadEventFromInputData(String[] inputData) throws ParseException {
 		Event event = new Event();
 		
 		event.setId(inputData[0]);
@@ -49,13 +54,9 @@ public class EventsProcessor {
 		return event;
 	}
 
-	private static Proposal loadProposalFromInputData(String[] inputData) {
+	private Proposal loadProposalFromInputData(String[] inputData) {
 		String proposalId = inputData[4];
-		
-		if (proposals == null) {
-			proposals = new ArrayList<Proposal>();
-		}
-		
+
 		for (Proposal proposal : proposals) {
 			if (proposalId.equals(proposal.getId())) {
 				return proposal;
@@ -70,7 +71,7 @@ public class EventsProcessor {
 		return proposal;
 	}
 
-	private static void addProposal(Proposal proposal) {
+	private void addProposal(Proposal proposal) {
 		if (proposals == null) {
 			proposals = new ArrayList<Proposal>();
 		}
@@ -78,7 +79,7 @@ public class EventsProcessor {
 		proposals.add(proposal);
 	}
 
-	private static void validateEventWasNotDuplicated(Event event) throws InvalidEventException {
+	private void validateEventWasNotDuplicated(Event event) throws InvalidEventException {
 		if (oldEvents != null) {
 			for (Event oldEvent : oldEvents) {
 				if (oldEvent.getId().equals(event.getId())) {
@@ -88,8 +89,8 @@ public class EventsProcessor {
 		}
 	}
 
-	private static void validateEventWasNotProcessed(Event event) throws InvalidEventException {
-		if (oldEvents != null) {
+	private void validateEventWasNotProcessed(Event event) throws InvalidEventException {
+		if (!oldEvents.isEmpty()) {
 			for (Event oldEvent : oldEvents) {
 				if (oldEvent.getId().equals(event.getId())) {
 					throw new InvalidEventException("Event Duplicated");
@@ -103,7 +104,7 @@ public class EventsProcessor {
 		}
 	}
 
-	private static void process(String[] inputData, Event event) throws InvalidEventException {
+	private void process(String[] inputData, Event event) throws InvalidEventException {
 		switch (event.getSchema()) {
 		case PROPOSAL:
 			processProposal(inputData, event);
@@ -122,7 +123,7 @@ public class EventsProcessor {
 		}
 	}
 
-	private static void processProposal(String[] inputData, Event event) throws InvalidEventException {
+	private void processProposal(String[] inputData, Event event) throws InvalidEventException {
 		switch (event.getAction()) {
 		case CREATED:
 		case UPDATED:
@@ -141,7 +142,7 @@ public class EventsProcessor {
 		}
 	}
 
-	private static void processWarranty(String[] inputData, Event event) throws InvalidEventException {
+	private void processWarranty(String[] inputData, Event event) throws InvalidEventException {
 		switch (event.getAction()) {
 		case ADDED:
 		case UPDATED:
@@ -156,7 +157,7 @@ public class EventsProcessor {
 		}
 	}
 
-	private static void processProponent(String[] inputData, Event event) throws InvalidEventException {
+	private void processProponent(String[] inputData, Event event) throws InvalidEventException {
 		switch (event.getAction()) {
 		case ADDED:
 		case UPDATED:
@@ -171,19 +172,11 @@ public class EventsProcessor {
 		}
 	}
 	
-	private static void addHistoric(Event event) {
-		if (oldEvents == null) {
-			oldEvents = new ArrayList<Event>();
-		}
-		
+	private void addHistoric(Event event) {
 		oldEvents.add(event);
 	}
 
-	public static List<Proposal> getProposals() {
-		if (proposals == null) {
-			proposals = new ArrayList<Proposal>();
-		}
-		
+	public List<Proposal> getProposals() {
 		return proposals;
 	}
 	

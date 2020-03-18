@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class SolutionTest {
 
 	@Test
-	public void testProcessMessages_WhenEmptyInput_ThenReturnEmptyString() {
+	public void testProcessMessages_WhenEmptyInput_ThenReturnEmptyString() throws Exception {
 		String expectedOutput = "";
 
 		List<String> input = Collections.emptyList();
